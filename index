@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Love Journey</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+</head>
+<body>
+
+    <!-- Love Timeline Section -->
+    <div class="magical-heading">
+        <h1 class="heading-main">Our Journey of Love 💖</h1>
+        <div class="heading-subtitle">A Story Written in Time, Together Forever</div>
+    </div>
+
+    <div class="timeline-container">
+        <div class="timeline">
+            <div class="timeline-item">
+                <h3>First Meet 🌟</h3>
+                <p>The moment my world changed forever</p>
+                <small>January 15</small>
+            </div>
+            <div class="timeline-item">
+                <h3>First Date 🍽️</h3>
+                <p>The start of our beautiful journey</p>
+                <small>February 1</small>
+            </div>
+            <div class="timeline-item">
+                <h3>First Kiss 💋</h3>
+                <p>A magical moment under the stars</p>
+                <small>February 14</small>
+            </div>
+            <div class="timeline-item">
+                <h3>I Love You ❤️</h3>
+                <p>When our hearts became one</p>
+                <small>March 1</small>
+            </div>
+        </div>
+    </div>
+
+    <!-- Love Letter Section -->
+    <div class="container">
+        <div class="letter"></div>
+        <div class="signature"></div>
+        <button class="next-button">Continue to Next Surprise ❤️</button>
+    </div>
+
+    <div class="loading-hearts">
+        <span>❤️</span>
+        <span>❤️</span>
+        <span>❤️</span>
+    </div>
+
+    <!-- Login Form Section -->
+    <form id="login-form">
+        <h2>Enter Your Name</h2>
+        <label for="code">My Love:</label>
+        <input type="text" id="code" name="code" placeholder="Your Name">
+        <button id="submit-btn">Login</button>
+    </form>
+    <div id="result"></div>
+
+    <div class="valentine-title">
+        <h1 class="main-title">Happy Valentine's Day</h1>
+        <h2 class="sub-title">My Love ❤️</h2>
+    </div>
+
+    <div class="heart-container">
+        <div class="heart"></div>
+    </div>
+
+    <button class="button" onclick="goToNextPage()">Click Me!</button>
+
+    <script>
+        // Floating hearts creation
+        function createFloatingHearts() {
+            const hearts = ['❤️', '💖', '💝', '💕'];
+            for (let i = 0; i < 15; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'floating-heart';
+                heart.textContent = hearts[Math.floor(Math.random() * hearts.length)];
+                heart.style.left = `${Math.random() * 100}vw`;
+                heart.style.top = `${Math.random() * 100}vh`;
+                heart.style.fontSize = `${Math.random() * 20 + 10}px`;
+                heart.style.setProperty('--float-time', `${Math.random() * 3 + 2}s`);
+                document.body.appendChild(heart);
+            }
+        }
+
+        // Love letter content
+        const loveLetter = `Hey Love,
+
+Every day with you feels like a beautiful gift. You make everything better with your smile and the way you care. When I’m with you, I feel so happy and peaceful, like nothing in the world could go wrong.
+
+You’re the one I think about all the time. Your laughter is the best sound, and your presence makes everything brighter. I love how we can talk about anything, laugh at silly things, and be ourselves around each other.
+
+Thank you for being you. I feel lucky to have you by my side, and I promise to always be there for you.
+
+With all my heart, 
+Forever Yours.`;
+
+        const signature = "❤️ Your Forever Love ❤️";
+
+        const letter = document.querySelector('.letter');
+        const signatureElement = document.querySelector('.signature');
+        const nextButton = document.querySelector('.next-button');
+        const loadingHearts = document.querySelector('.loading-hearts');
+
+        let letterIndex = 0;
+        let isWriting = true;
+
+        // Add cursor element
+        const cursor = document.createElement('span');
+        cursor.className = 'cursor';
+        letter.appendChild(cursor);
+
+        function writeLetter() {
+            if (letterIndex < loveLetter.length) {
+                letter.textContent = loveLetter.substring(0, letterIndex + 1);
+                letter.appendChild(cursor);
+                letterIndex++;
+
+                const currentChar = loveLetter[letterIndex - 1];
+                let delay = 50;
+
+                if (/[,.!]/.test(currentChar)) delay = 400;
+                if (/\n/.test(currentChar)) delay = 800;
+
+                setTimeout(writeLetter, delay);
+            } else {
+                isWriting = false;
+                cursor.remove();
+
+                setTimeout(() => {
+                    signatureElement.textContent = signature;
+                    signatureElement.classList.add('show');
+
+                    setTimeout(() => {
+                        nextButton.classList.add('show');
+                    }, 1000);
+                }, 500);
+            }
+        }
+
+        setTimeout(writeLetter, 1000);
+
+        nextButton.addEventListener('click', () => {
+            document.querySelector('.container').classList.add('fade-out');
+            loadingHearts.classList.add('show');
+
+            setTimeout(() => {
+                window.location.href = 'love.html'; // Replace with your next page URL
+            }, 2000);
+        });
+
+        // Login form functionality
+        const form = document.getElementById('login-form');
+        const codeInput = document.getElementById('code');
+        const submitBtn = document.getElementById('submit-btn');
+        const resultDiv = document.getElementById('result');
+
+        const secretCode = 'Shobhit'; // Replace with your secret code
+        const nextPageUrl = 'main.html'; // Replace with the URL of the new page
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const userInput = codeInput.value.trim();
+            if (userInput === secretCode) {
+                resultDiv.innerHTML = 'Baby';
+                window.location.href = nextPageUrl; // Redirect to new page
+            } else {
+                resultDiv.innerHTML = 'Naa Tum meri baby nhi hoo kon hooo tum kaha hai meri Shobhit';
+            }
+        });
+
+        // Add active class to form for fadeIn effect
+        window.onload = () => {
+            setTimeout(() => {
+                form.classList.add('active');
+            }, 200);
+            createFloatingHearts();
+        };
+
+        function goToNextPage() {
+            window.location.href = "letter.html";
+        }
+    </script>
+</body>
+</html>
